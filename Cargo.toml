@@ -3,3 +3,4 @@ name = "git-todo"
 version = "0.0.1"
 
 [dependencies]
+git2 = "0.13.11"
