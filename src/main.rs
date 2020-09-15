@@ -34,7 +34,7 @@ fn main() {
                     let l = std::str::from_utf8(line.content()).unwrap();
 
                     if l.contains("TODO") {
-                        println!(
+                        print!(
                             "{}:{}:{}",
                             delta.new_file().path().unwrap().display(),
                             line_number,

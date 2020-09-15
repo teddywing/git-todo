@@ -37,7 +37,7 @@ system('git commit -m "New TODO"');
 ok !$?;
 
 my $todos = qx($BIN);
-is $todos, 'TODO: 100-shows-todo-comments-since-fork-point
+is $todos, 'git-sugdiff.rs:34:    // TODO: 100-shows-todo-comments-since-fork-point
 ';
 
 
