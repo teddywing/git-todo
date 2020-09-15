@@ -1,9 +1,11 @@
 #![warn(rust_2018_idioms)]
 
+use std::io::Write;
+
 use git2::Repository;
 
 
-pub fn write_since() {
+pub fn write_since<W: Write>(write_to: &mut W) {
     let repo = Repository::open(".").unwrap();
 
     // let head = repo.head().unwrap().target().unwrap();
@@ -32,12 +34,13 @@ pub fn write_since() {
                     let l = std::str::from_utf8(line.content()).unwrap();
 
                     if l.contains("TODO") {
-                        print!(
+                        write!(
+                            write_to,
                             "{}:{}:{}",
                             delta.new_file().path().unwrap().display(),
                             line_number,
                             l,
-                        );
+                        ).unwrap();
                     }
                 }
 

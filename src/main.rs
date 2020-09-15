@@ -4,5 +4,5 @@ use git_todo::write_since;
 
 
 fn main() {
-    write_since();
+    write_since(&mut std::io::stdout());
 }
