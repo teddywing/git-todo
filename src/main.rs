@@ -30,15 +30,17 @@ fn main() {
                 //     std::str::from_utf8(line.content()).unwrap(),
                 // );
 
-                let l = std::str::from_utf8(line.content()).unwrap();
+                if let Some(line_number) = line.new_lineno() {
+                    let l = std::str::from_utf8(line.content()).unwrap();
 
-                if l.contains("TODO") {
-                    println!(
-                        "{}:{}:{}",
-                        delta.new_file().path().unwrap().display(),
-                        line.new_lineno().unwrap(),
-                        l,
-                    );
+                    if l.contains("TODO") {
+                        println!(
+                            "{}:{}:{}",
+                            delta.new_file().path().unwrap().display(),
+                            line_number,
+                            l,
+                        );
+                    }
                 }
 
                 true
