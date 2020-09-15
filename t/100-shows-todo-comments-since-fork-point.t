@@ -42,7 +42,8 @@ is $todos, 'TODO: 100-shows-todo-comments-since-fork-point
 
 
 # Teardown
-system('git branch -d fork-point');
+system('git checkout master');
+system('git branch -D fork-point');
 
 
 done_testing;
