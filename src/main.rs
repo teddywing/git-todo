@@ -44,15 +44,15 @@ fn main() {
         // TODO: error if more than one ref given
         let refname = &matches.free[0];
 
-        let oid = match repo.refname_to_id(&refname) {
-            Ok(oid) => oid,
+        let object = match repo.revparse_single(&refname) {
+            Ok(object) => object,
             Err(e) => {
                 eprintln(&e);
                 process::exit(exitcode::USAGE);
             },
         };
 
-        match repo.find_tree(oid) {
+        match object.peel_to_tree() {
             Ok(t) => t,
             Err(e) => {
                 eprintln(&e);
