@@ -22,7 +22,13 @@ fn main() {
         },
     };
 
-    let repo = Repository::open(".").unwrap();
+    let repo = match Repository::open(".") {
+        Ok(r) => r,
+        Err(e) => {
+            eprintln(&format!("unable to open repository: {}", e));
+            process::exit(exitcode::NOINPUT);
+        },
+    };
 
     let todos = Todos { repo: &repo };
 
@@ -55,7 +61,13 @@ fn main() {
         }
     };
 
-    todos.write_since(tree, &mut std::io::stdout()).unwrap();
+    match todos.write_since(tree, &mut std::io::stdout()) {
+        Err(e) => {
+            eprintln(&e);
+            process::exit(exitcode::UNAVAILABLE);
+        },
+        _ => (),
+    };
 }
 
 /// Print to standard error with a program-specific prefix.
