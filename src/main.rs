@@ -13,6 +13,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let mut opts = Options::new();
+    opts.optflag("h", "help", "print this help menu");
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -21,6 +22,11 @@ fn main() {
             process::exit(exitcode::NOINPUT);
         },
     };
+
+    if matches.opt_present("h") {
+        print_usage(&opts);
+        process::exit(exitcode::USAGE);
+    }
 
     let repo = match Repository::open(".") {
         Ok(r) => r,
@@ -68,6 +74,12 @@ fn main() {
         },
         _ => (),
     };
+}
+
+/// Print command line usage.
+fn print_usage(opts: &Options) {
+    let brief = "usage: git todo [<commit>]";
+    print!("{}", opts.usage(&brief));
 }
 
 /// Print to standard error with a program-specific prefix.
