@@ -32,14 +32,7 @@ impl Todos<'_> {
             None,
             None,
             Some(
-                &mut |delta, hunk, line| {
-                    // println!(
-                    //     "d: {:?}, h: {:?}, l: {:?}",
-                    //     delta,
-                    //     hunk,
-                    //     std::str::from_utf8(line.content()).unwrap(),
-                    // );
-
+                &mut |delta, _hunk, line| {
                     if let Some(line_number) = line.new_lineno() {
                         if let Ok(l) = std::str::from_utf8(line.content()) {
                             if l.contains("TODO") {
