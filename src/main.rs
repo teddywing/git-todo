@@ -17,7 +17,7 @@ fn main() {
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
         Err(e) => {
-            eprintln!("TODO {}", e);
+            eprintln(&e);
             process::exit(exitcode::NOINPUT);
         },
     };
@@ -30,7 +30,7 @@ fn main() {
         match todos.master_tree() {
             Ok(t) => t,
             Err(e) => {
-                eprintln!("TODO {}", e);
+                eprintln(&e);
                 process::exit(exitcode::USAGE);
             },
         }
@@ -41,7 +41,7 @@ fn main() {
         let oid = match repo.refname_to_id(&refname) {
             Ok(oid) => oid,
             Err(e) => {
-                eprintln!("TODO {}", e);
+                eprintln(&e);
                 process::exit(exitcode::USAGE);
             },
         };
@@ -49,11 +49,16 @@ fn main() {
         match repo.find_tree(oid) {
             Ok(t) => t,
             Err(e) => {
-                eprintln!("TODO {}", e);
+                eprintln(&e);
                 process::exit(exitcode::USAGE);
             },
         }
     };
 
     todos.write_since(tree, &mut std::io::stdout()).unwrap();
+}
+
+/// Print to standard error with a program-specific prefix.
+fn eprintln<D: std::fmt::Display>(error: &D) {
+    eprintln!("error: {}", error);
 }
