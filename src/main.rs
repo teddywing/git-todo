@@ -9,5 +9,5 @@ fn main() {
     let repo = Repository::open(".").unwrap();
 
     let todos = Todos { repo: &repo };
-    todos.write_since(todos.master_tree(), &mut std::io::stdout());
+    todos.write_since(todos.master_tree().unwrap(), &mut std::io::stdout()).unwrap();
 }

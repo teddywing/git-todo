@@ -5,3 +5,4 @@ edition = "2018"
 
 [dependencies]
 git2 = "0.13.11"
+thiserror = "1.0.20"

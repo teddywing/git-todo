@@ -3,6 +3,14 @@
 use std::io::Write;
 
 use git2::{Repository, Tree};
+use thiserror::Error;
+
+
+#[derive(Error, Debug)]
+pub enum Error {
+    #[error(transparent)]
+    Git(#[from] git2::Error),
+}
 
 
 pub struct Todos<'a> {
@@ -10,8 +18,12 @@ pub struct Todos<'a> {
 }
 
 impl Todos<'_> {
-    pub fn write_since<W: Write>(&self, tree: Tree<'_>, write_to: &mut W) {
-        let diff = self.repo.diff_tree_to_workdir(Some(&tree), None).unwrap();
+    pub fn write_since<W: Write>(
+        &self,
+        tree: Tree<'_>,
+        write_to: &mut W,
+    ) -> Result<(), Error> {
+        let diff = self.repo.diff_tree_to_workdir(Some(&tree), None)?;
 
         diff.foreach(
             &mut |_file, _progress| {
@@ -45,12 +57,14 @@ impl Todos<'_> {
                     true
                 }
             ),
-        ).unwrap();
+        )?;
+
+        Ok(())
     }
 
-    pub fn master_tree(&self) -> Tree<'_> {
-        let master = self.repo.find_branch("master", git2::BranchType::Local).unwrap();
+    pub fn master_tree(&self) -> Result<Tree<'_>, Error> {
+        let master = self.repo.find_branch("master", git2::BranchType::Local)?;
 
-        master.get().peel_to_tree().unwrap()
+        Ok(master.get().peel_to_tree()?)
     }
 }
