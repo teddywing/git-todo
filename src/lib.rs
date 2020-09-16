@@ -41,16 +41,18 @@ impl Todos<'_> {
                     // );
 
                     if let Some(line_number) = line.new_lineno() {
-                        let l = std::str::from_utf8(line.content()).unwrap();
-
-                        if l.contains("TODO") {
-                            write!(
-                                write_to,
-                                "{}:{}:{}",
-                                delta.new_file().path().unwrap().display(),
-                                line_number,
-                                l,
-                            ).unwrap();
+                        if let Ok(l) = std::str::from_utf8(line.content()) {
+                            if l.contains("TODO") {
+                                if let Some(path) = delta.new_file().path() {
+                                    write!(
+                                        write_to,
+                                        "{}:{}:{}",
+                                        path.display(),
+                                        line_number,
+                                        l,
+                                    ).expect("write error");
+                                }
+                            }
                         }
                     }
 
