@@ -46,8 +46,10 @@ fn main() {
                 process::exit(exitcode::USAGE);
             },
         }
+    } else if matches.free.len() > 1 {
+        eprintln(&"too many ref arguments");
+        process::exit(exitcode::USAGE);
     } else {
-        // TODO: error if more than one ref given
         let refname = &matches.free[0];
 
         let object = match repo.revparse_single(&refname) {
