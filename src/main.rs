@@ -14,6 +14,7 @@ fn main() {
 
     let mut opts = Options::new();
     opts.optflag("h", "help", "print this help menu");
+    opts.optflag("V", "version", "show the program version");
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -26,6 +27,11 @@ fn main() {
     if matches.opt_present("h") {
         print_usage(&opts);
         process::exit(exitcode::USAGE);
+    }
+
+    if matches.opt_present("V") {
+        println!("{}", env!("CARGO_PKG_VERSION"));
+        process::exit(exitcode::OK);
     }
 
     let repo = match Repository::open(".") {
