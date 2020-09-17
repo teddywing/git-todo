@@ -18,6 +18,13 @@ pub struct Todos<'a> {
 }
 
 impl Todos<'_> {
+    /// Write TODO lines.
+    ///
+    /// Writes TODO lines since `tree` to `write_to`.
+    ///
+    /// # Panics
+    ///
+    /// Panics if writing to `write_to` fails.
     pub fn write_since<W: Write>(
         &self,
         tree: Tree<'_>,
@@ -57,6 +64,7 @@ impl Todos<'_> {
         Ok(())
     }
 
+    /// Get a Git tree for the master branch.
     pub fn master_tree(&self) -> Result<Tree<'_>, Error> {
         let master = self.repo.find_branch("master", git2::BranchType::Local)?;
 
