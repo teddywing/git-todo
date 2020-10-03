@@ -1,0 +1,31 @@
+git-todo(1)
+===========
+
+NAME
+----
+git-todo - Output recent TODO lines
+
+SYNOPSIS
+--------
+'git todo' [options] [<ref>]
+
+DESCRIPTION
+-----------
+Find TODO lines and output them in a grep-style format including the name
+of the file containing them and their line number.
+
+By default, outputs all TODO lines since `master`.
+
+OPTIONS
+-------
+-h, --help::
+	Print usage help.
+
+-V, --version::
+	Print the program version.
+
+EXAMPLES
+--------
+Show TODOs since the `v1.0.0` tag:
+
+	$ git todo v1.0.0
