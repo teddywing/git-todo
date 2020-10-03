@@ -1,6 +1,11 @@
+SOURCES := $(shell find . -name '*.rs')
+DEPENDENCIES := Cargo.toml
+DEBUG_PRODUCT := target/debug/git-todo
+
+
 .PHONY: test
-test: target/debug/git-todo
+test: $(DEBUG_PRODUCT)
 	prove -v -I./t
 
-target/debug/git-todo:
+$(DEBUG_PRODUCT): $(SOURCES) $(DEPENDENCIES)
 	cargo build
