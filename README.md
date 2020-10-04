@@ -26,6 +26,11 @@ To compile from source or install on other platforms:
 	$ cargo uninstall git-todo
 
 
+## Vim plugin
+A Vim plugin is available to facilitate TODO navigation:
+https://github.com/teddywing/vim-git-todo
+
+
 ## License
 Copyright © 2020 Teddy Wing. Licensed under the GNU GPLv3+ (see the included
 COPYING file).
