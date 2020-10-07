@@ -18,7 +18,7 @@
 
 use std::io::Write;
 
-use git2::{Repository, Tree};
+use git2::{DiffOptions, Repository, Tree};
 use thiserror::Error;
 
 
@@ -46,7 +46,15 @@ impl Todos<'_> {
         tree: Tree<'_>,
         write_to: &mut W,
     ) -> Result<(), Error> {
-        let diff = self.repo.diff_tree_to_workdir(Some(&tree), None)?;
+        let mut diff_options = DiffOptions::new();
+        diff_options
+            .show_untracked_content(true)
+            .recurse_untracked_dirs(true);
+
+        let diff = self.repo.diff_tree_to_workdir_with_index(
+            Some(&tree),
+            Some(&mut diff_options),
+        )?;
 
         diff.foreach(
             &mut |_file, _progress| {
