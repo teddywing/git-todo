@@ -50,7 +50,7 @@ fn main() {
         process::exit(exitcode::OK);
     }
 
-    let repo = match Repository::open(".") {
+    let repo = match Repository::open_from_env() {
         Ok(r) => r,
         Err(e) => {
             eprintln(&format!("unable to open repository: {}", e));
