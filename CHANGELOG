@@ -1,0 +1,13 @@
+CHANGELOG
+=========
+
+v0.0.2 (2020-10-08):
+	Fixes:
+
+	* The command now works in subdirectories of a repository.
+	* TODO lines in untracked files are now included in the output.
+
+v0.0.1 (2020-10-03):
+	First public release.
+
+ vim:tw=80:comments=:fo+=n:formatlistpat=^\\s*\\*\\s*
