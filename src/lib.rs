@@ -17,6 +17,7 @@
 #![warn(rust_2018_idioms)]
 
 use std::io::Write;
+use std::path::{Path, PathBuf};
 
 use git2::{DiffOptions, Repository, Tree};
 use thiserror::Error;
@@ -71,7 +72,7 @@ impl Todos<'_> {
                                     write!(
                                         write_to,
                                         "{}:{}:{}",
-                                        path.display(),
+                                        relative_path(self.repo, path).display(),
                                         line_number,
                                         l,
                                     ).expect("write error");
@@ -93,5 +94,31 @@ impl Todos<'_> {
         let master = self.repo.find_branch("master", git2::BranchType::Local)?;
 
         Ok(master.get().peel_to_tree()?)
+    }
+}
+
+/// Get `path` relative to the current directory.
+///
+/// Attempt to remove the current directory prefix from `path` to turn it into a
+/// relative path from the current directory.
+fn relative_path(repo: &Repository, path: &Path) -> PathBuf {
+    let workdir = match repo.workdir() {
+        Some(d) => d,
+        None => return path.to_path_buf(),
+    };
+
+    let current_dir = match std::env::current_dir() {
+        Ok(d) => d,
+        Err(_) => return path.to_path_buf(),
+    };
+
+    let current_dir_relative = match current_dir.strip_prefix(workdir) {
+        Ok(d) => d,
+        Err(_) => return path.to_path_buf(),
+    };
+
+    match path.strip_prefix(current_dir_relative) {
+        Ok(d) => d.to_path_buf(),
+        Err(_) => path.to_path_buf(),
     }
 }
