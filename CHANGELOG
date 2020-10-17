@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v0.0.3 (2020-10-17):
+	Fixes:
+
+	* Output file paths relative to the current working directory instead of the
+	  repository root.
+
 v0.0.2 (2020-10-08):
 	Fixes:
 
