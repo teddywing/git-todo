@@ -19,6 +19,7 @@
 use strict;
 
 use File::Copy;
+use File::Path qw(remove_tree);
 use Test::More;
 
 use Bin qw($BIN);
@@ -63,6 +64,9 @@ is $todos, 'git-sugdiff.rs:34:    // TODO: 100-shows-todo-comments-since-fork-po
 # Teardown
 system('git checkout master');
 system('git branch -D fork-point');
+
+chdir '..' or die $!;
+remove_tree('subdir');
 
 
 done_testing;
